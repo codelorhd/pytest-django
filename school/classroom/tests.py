@@ -1,8 +1,11 @@
 from django.test import TestCase
-from classroom.models import Student
+from .models import Student, ClassRoom
 
+import pytest
 from mixer.backend.django import mixer
 
+# prevents pytest from data to the database
+pytestmark = pytest.mark.django_db
 
 class TestStudentModel(TestCase):
 
@@ -50,3 +53,15 @@ class TestStudentModel(TestCase):
         student1 = mixer.blend(Student, average_score=90)
         student_result = Student.objects.last()
         assert student_result.get_grade() == 'Excellent'
+
+    def test_grade_error(self):
+        student1 = mixer.blend(Student, average_score=101)
+        student_result = Student.objects.last()
+        assert student_result.get_grade() == 'Error'
+
+class TestClassRoomModel():
+    def test_classroom_create(self):
+        classroom = mixer.blend(ClassRoom, name="Physics")    
+        classroom_result = ClassRoom.objects.last()
+        assert str(classroom_result) == 'Physics'
+    
