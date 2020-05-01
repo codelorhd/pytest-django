@@ -1,1 +1,3 @@
-htmlcov
+htmlcov/
+.hypothesis
+.pytest_cache
