@@ -18,7 +18,7 @@ class TestStudentModel(TestCase):
         b = 2
 
         c = a + b
-        self.assertEquals(c, 3)
+        assert c == 3
 
     def test_student_can_be_created(self):
         # Student.ojects.create(
@@ -29,24 +29,24 @@ class TestStudentModel(TestCase):
         student1 = mixer.blend(Student, first_name='SOLOMON')
 
         student_result = Student.objects.last()
-        self.assertEqual(student_result.first_name, 'SOLOMON')
+        assert student_result.first_name == 'SOLOMON'
 
     def test_str_returns(self):
         student1 = mixer.blend(Student, first_name='SOLOMON')
         student_result = Student.objects.last()
-        self.assertEqual(str(student1), 'SOLOMON')
+        assert str(student1) == 'SOLOMON'
 
     def test_grade_fail(self):
         student1 = mixer.blend(Student, average_score=10)
         student_result = Student.objects.last()
-        self.assertEquals(student_result.get_grade(), 'fail')
+        assert student_result.get_grade() == 'fail'
 
     def test_grade_pass(self):
         student1 = mixer.blend(Student, average_score=60)
         student_result = Student.objects.last()
-        self.assertEquals(student_result.get_grade(), 'pass')
+        assert student_result.get_grade() == 'pass'
 
     def test_grade_excellent(self):
         student1 = mixer.blend(Student, average_score=90)
         student_result = Student.objects.last()
-        self.assertEquals(student_result.get_grade(), 'Excellent')
+        assert student_result.get_grade() == 'Excellent'

@@ -65,6 +65,7 @@ WSGI_APPLICATION = 'school.wsgi.application'
 #     }
 # }
 
+# TEST DATABASE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
