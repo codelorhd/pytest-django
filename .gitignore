@@ -5,3 +5,4 @@ htmlcov
 school/.hypothesis
 school/.pytest_cache
 
+node_modules
