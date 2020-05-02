@@ -2,29 +2,45 @@ name: PyTest CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix:
         python-version: [3.6, 3.7]
 
+    services:
+      db:
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        ports:
+          - "3306:3306"
+        environment:
+          MYSQL_ROOT_PASSWORD: dbpassword
+          MYSQL_DATABASE: py-test
+          MYSQL_USER: root
+          MYSQL_PASSWORD: dbpassword
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1 
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Run Tests
-      run: |
-        pytest school
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Make .env file
+        run: |
+          cp school/.env.sample school/.env
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run Tests
+        run: |
+          pytest school
