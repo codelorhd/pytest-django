@@ -43,11 +43,11 @@ jobs:
 #           done
 
       - uses: mirromutth/mysql-action@v1.1
-          with:
-            mysql database: py-test
-            mysql root password: dbpassword
-            mysql user: root
-            mysql password: dbpassword
+        with:
+          mysql database: py-test
+          mysql root password: dbpassword
+          mysql user: root
+          mysql password: dbpassword
 
       - name: Make .env file
         run: |
