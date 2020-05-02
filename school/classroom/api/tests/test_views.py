@@ -7,11 +7,37 @@ import pytest
 pytestmark = pytest.mark.django_db
 
 
+class Authentication():
+
+    def get_client(self):
+        self.client = APIClient()
+        self.setAuthentication()
+        return self.client
+
+    def setAuthentication(self):
+        from rest_framework.authtoken.models import Token
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        self.user = User.objects.create_user(
+            username="testuser", password="abcde"
+        )
+        self.token = Token.objects.create(user=self.user).key
+
+        # self.client.credentials(HTTP_CONTENTTYPE='application/json')
+        self.token_url = '/api-token-auth/'
+
+        user_data = {
+            "username": "testuser", "password": "abcde"
+        }
+        response = self.client.post(self.token_url, data=user_data)
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token ' + response.data['token'])
+
+
 class TestStudentAPIViews(TestCase):
 
     def setUp(self):
-        self.client = APIClient()
-        print(self.client, "self.client")
+        self.client = Authentication().get_client()
 
     def test_student_list_works(self):
         # create a student
@@ -84,17 +110,16 @@ class TestStudentAPIViews(TestCase):
 class TestClassRoomAPIViews(TestCase):
 
     def setUp(self):
-        self.client = APIClient()
-    
+        self.client = Authentication().get_client()
+
     def test_classroom_qs_works(self):
         classrom_qs = mixer.blend(ClassRoom, student_capacity=20)
         classrom_qs2 = mixer.blend(ClassRoom, student_capacity=27)
-        
-        
+
         url = reverse('classroom_student_capacity_api', kwargs={
             "capacity": 20
         })
-        
+
         response = self.client.get(url)
         assert response.status_code == 200
         assert response.data['classroom_data'] != []

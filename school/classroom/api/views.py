@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, authentication, permissions
 from .serializers import StudentSerializer, ClassroomSerializer
 from classroom.models import Student, ClassRoom
 
@@ -34,6 +34,9 @@ class ClassRoomStudentCount(APIView):
     serializer_class = ClassroomSerializer
     model = ClassRoom
     queryset = ClassRoom.objects.all()
+
+    authentication_classes = [authentication.TokenAuthentication, ]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, *args, **kwargs):
         capacity = self.kwargs.get('capacity')
