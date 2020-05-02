@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 def validate_negative(value):
-    if (value < 0):
+    if value < 0:
         raise ValidationError(
             _("%(value)s is not a positive number"), params=("value", value),
         )
@@ -19,19 +19,20 @@ class Student(models.Model):
 
     is_qualified = models.BooleanField(default=False)
     average_score = models.FloatField(
-        blank=True, null=TabError, validators=[validate_negative])
+        blank=True, null=TabError, validators=[validate_negative]
+    )
 
     username = models.SlugField(blank=True, null=True)
 
     def get_grade(self):
         if 0 <= self.average_score < 40:
-            return 'fail'
+            return "fail"
         elif 40 <= self.average_score < 70:
-            return 'pass'
+            return "pass"
         elif 70 <= self.average_score <= 100:
-            return 'Excellent'
+            return "Excellent"
         else:
-            return 'Error'
+            return "Error"
 
     def __str__(self):
         return self.first_name
@@ -44,7 +45,7 @@ class Student(models.Model):
 class ClassRoom(models.Model):
     name = models.CharField(max_length=120)
     student_capacity = models.IntegerField()
-    students = models.ManyToManyField('classroom.Student')
+    students = models.ManyToManyField("classroom.Student")
 
     def __str__(self):
         return self.name
