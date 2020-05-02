@@ -1,0 +1,1 @@
+![](https://github.com/solesty/pytest-django/workflows/PyTest%20CI/badge.svg)

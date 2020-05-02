@@ -14,33 +14,12 @@ jobs:
       matrix:
         python-version: [3.6]
 
-#     services:
-#       mariadb:
-#         image: mariadb:latest
-#         ports:
-#           - 3306
-#         env:
-#           MYSQL_ROOT_PASSWORD: dbpassword
-#           MYSQL_DATABASE: py-test
-#           MYSQL_USER: root
-#           MYSQL_PASSWORD: dbpassword
-          
-#         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
-      
-#       - name: Verify MariaDB connection
-#         env:
-#           PORT: ${{ job.services.mariadb.ports[3306] }}
-#         run: |
-#           while ! mysqladmin ping -h"127.0.0.1" -P"$PORT" --silent; do
-#             sleep 1
-#           done
 
       - uses: mirromutth/mysql-action@v1.1
         with:
