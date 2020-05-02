@@ -1,8 +1,0 @@
-htmlcov
-.pytest_cache
-.hypothesis
-
-school/.hypothesis
-school/.pytest_cache
-
-node_modules
