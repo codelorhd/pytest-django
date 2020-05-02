@@ -17,11 +17,10 @@ jobs:
     services:
       db:
         image: mysql
-        command: --default-authentication-plugin=mysql_native_password
-        restart: always
+        options: "--default-authentication-plugin=mysql_native_password"
         ports:
           - "3306:3306"
-        environment:
+        env:
           MYSQL_ROOT_PASSWORD: dbpassword
           MYSQL_DATABASE: py-test
           MYSQL_USER: root
