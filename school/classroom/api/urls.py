@@ -12,4 +12,6 @@ urlpatterns = [
          name="student_detail_api"),
     path('student/<int:pk>/delete', views.StudentDeleteAPIView.as_view(),
          name="student_delete_api"),
+    path('classroom/<int:capacity>', views.ClassRoomStudentCount.as_view(),
+         name="classroom_student_capacity_api"),
 ]

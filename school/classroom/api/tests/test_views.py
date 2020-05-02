@@ -49,10 +49,10 @@ class TestStudentAPIViews(TestCase):
 
         # call the url
         url = reverse('student_detail_api', kwargs={
-            "pk": 1
+            "pk": student.pk
         })
         url2 = reverse('student_detail_api', kwargs={
-            "pk": 2
+            "pk": student2.pk
         })
 
         response = self.client.get(url)
@@ -63,8 +63,8 @@ class TestStudentAPIViews(TestCase):
         assert response.json()['first_name'] == 'Solomon'
         assert response.json()['username'] == 'solomon'
 
-        assert response.json != None
-        assert response.status_code == 200
+        assert response2.json != None
+        assert response2.status_code == 200
         assert response2.json()['first_name'] == 'Adeleke'
         assert response2.json()['username'] == 'adeleke'
 
@@ -74,8 +74,28 @@ class TestStudentAPIViews(TestCase):
 
         # call the url
         response = self.client.delete(reverse('student_delete_api', kwargs={
-            "pk": 1
+            "pk": student.pk
         }))
 
         assert response.status_code == 204
         assert Student.objects.count() == 0
+
+
+class TestClassRoomAPIViews(TestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+    
+    def test_classroom_qs_works(self):
+        classrom_qs = mixer.blend(ClassRoom, student_capacity=20)
+        classrom_qs2 = mixer.blend(ClassRoom, student_capacity=27)
+        
+        
+        url = reverse('classroom_student_capacity_api', kwargs={
+            "capacity": 20
+        })
+        
+        response = self.client.get(url)
+        assert response.status_code == 200
+        assert response.data['classroom_data'] != []
+        assert response.data['number_classes'] == 2
