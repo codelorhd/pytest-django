@@ -7,7 +7,7 @@ black==19.10b0
 click==7.1.2
 coverage==5.1
 Django==3.0.5
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 execnet==1.7.1
 Faker==0.9.1
 hypothesis==5.10.4
